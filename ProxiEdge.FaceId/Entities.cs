@@ -317,6 +317,11 @@ namespace ProxiEdge.FaceId.Results
           T Results { get; set; }
     }
 
+    public interface IApiResult
+    {
+
+    }
+
     public abstract class ApiResults<T> : IApiResults<T>
     {
         public bool IsSuccedded { get; set; }
@@ -340,7 +345,7 @@ namespace ProxiEdge.FaceId.Results
         public override FaceVerifyResult Results { get; set; }
     }
 
-    public class FaceVerifyResult
+    public class FaceVerifyResult : IApiResult
     {
         public bool isIdentical { get; set; }
         public int confidence { get; set; }

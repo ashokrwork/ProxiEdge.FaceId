@@ -16,7 +16,7 @@ namespace ProxiEdge.FaceId
         public event EventHandler<FaceDetectionResults> DetectionCompleted;
         public event EventHandler<FindSimilarResults> FindSimilarCompleted;
         public event EventHandler<FaceVerifyResults> VerificationCompleted;
-
+        
         public FaceIdService(FaceIdEndPoint endPoint,string apiKey)
         {
             EndPointUrl = string.Format("https://{0}.api.cognitive.microsoft.com/face/v1.0",endPoint.ToString());
@@ -65,7 +65,7 @@ namespace ProxiEdge.FaceId
 
             using (var client = GetClient(WebClientContentType.Json))
             {
-                client.UploadDataCompleted += Client_VerificationCompleted; ;
+                client.UploadDataCompleted += Client_VerificationCompleted; 
                 client.UploadDataAsync(url, new FaceToFaceVerifyParameter() { faceId1 = originalFaceId,faceId2=matchedFaceId }.ToByteArray());
             }
         }
@@ -110,6 +110,8 @@ namespace ProxiEdge.FaceId
         {
             ProgressChanged?.Invoke(this, e);
         }
+
+        
 
         private void Client_DetectionCompleted(object sender, UploadDataCompletedEventArgs e)
         {
