@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ProxiEdge.FaceId
+﻿namespace ProxiEdge.FaceId.Base
 {
-   public enum FaceIdEndPoint
+    public enum FaceIdEndPoint
     {
         westus,
         westus2,
@@ -29,11 +25,23 @@ namespace ProxiEdge.FaceId
         northcentralus
     }
 
-    internal enum FaceIdOperation
+    internal enum FaceOperation
     {
         detect,
         findsimilars,
-        verify
+        verify,
+        group,
+        identify
+    }
+
+    internal enum FaceListOperation
+    {
+        facelists
+    }
+
+    internal enum LargeFaceListOperation
+    {
+        largefacelists
     }
 
     public enum FindSimilarMode
@@ -42,7 +50,7 @@ namespace ProxiEdge.FaceId
         matchFace
     }
 
-    public static class WebClientContentType
+    internal static class WebClientContentType
     {
         public static string Binary = "application/octet-stream";
         public static string Json = "application/json";

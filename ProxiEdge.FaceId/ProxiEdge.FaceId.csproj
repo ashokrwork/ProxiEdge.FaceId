@@ -2,16 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Microsoft Face Id wrapper library built using [WebClient] to enable progress reporting for Face Id API calls plus full encapsulation of the API requests entities and results into strongly typed objects for easier use.</Description>
     <Copyright>Copyright ProxiEDGE 2018. All rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/ashokrwork/ProxiEdge.FaceId</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ashokrwork/ProxiEdge.FaceId</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageTags>Cognitive,</PackageTags>
+    <Version>2.0.0</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="FaceIdService.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />

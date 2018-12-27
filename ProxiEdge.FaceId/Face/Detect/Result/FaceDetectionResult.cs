@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using ProxiEdge.FaceId.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace ProxiEdge.FaceId.Entities
+namespace ProxiEdge.FaceId.Face.Detect.Result
 {
     public class FaceRectangle
     {
@@ -301,100 +297,12 @@ namespace ProxiEdge.FaceId.Entities
         public Exposure exposure { get; set; }
         public Noise noise { get; set; }
     }
-
-    
-
-    
-}
-
-namespace ProxiEdge.FaceId.Results
-{
-    public interface IApiResults<T>
-    {
-        
-         bool IsSuccedded { get; set; }
-         Exception Error { get; set; }
-          T Results { get; set; }
-    }
-
-    public interface IApiResult
+    public class FaceDetectionResult
     {
 
+        public string FaceId { get; set; }
+        public FaceRectangle FaceRectangle { get; set; }
+        public FaceLandmarks FaceLandmarks { get; set; }
+        public FaceAttributes FaceAttributes { get; set; }
     }
-
-    public abstract class ApiResults<T> : IApiResults<T>
-    {
-        public bool IsSuccedded { get; set; }
-        public Exception Error { get; set; }
-        public abstract T Results { get; set; }
-    }
-
-    public class FaceDetectionResults : ApiResults<List<FaceResults>>
-    {
-        public override List<FaceResults> Results { get; set; }
-    }
-
-    public class FindSimilarResults : ApiResults<List<SimilarResults>>
-    {
-        public override List<SimilarResults> Results { get; set; }
-        
-    }
-
-    public class FaceVerifyResults : ApiResults<FaceVerifyResult>
-    {
-        public override FaceVerifyResult Results { get; set; }
-    }
-
-    public class FaceVerifyResult : IApiResult
-    {
-        public bool isIdentical { get; set; }
-        public int confidence { get; set; }
-    }
-
-    public class SimilarResults
-    {
-        public string persistedFaceId { get; set; }
-        public double confidence { get; set; }
-    }
-
-    public class FaceResults
-    {
-
-        public string faceId { get; set; }
-        public FaceRectangle faceRectangle { get; set; }
-        public FaceLandmarks faceLandmarks { get; set; }
-        public FaceAttributes faceAttributes { get; set; }
-    }
-}
-
-namespace ProxiEdge.FaceId.Json
-{
-    public class ApiParameterBase
-    {
-        public byte[] ToByteArray()
-        {
-            return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(this, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
-        }
-    }
-    public class FaceDetectionParameter : ApiParameterBase
-    {
-        public string url { get; set; }
-    }
-
-    public class FaceToFaceVerifyParameter : ApiParameterBase
-    {
-        public string faceId1 { get; set; }
-        public string faceId2 { get; set; }
-    }
-
-    public class FindSimilarParameter : ApiParameterBase
-    {
-        public string faceId { get; set; }
-        public string faceListId { get; set; }
-        public string largeFaceListId { get; set; }
-        public string[] faceIds { get; set; }
-        public int maxNumOfCandidatesReturned { get; set; }
-        public string mode { get; set; }
-    }
-
 }
