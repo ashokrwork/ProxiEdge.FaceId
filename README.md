@@ -13,6 +13,8 @@ var proxiEdgeFaceDetectionOperation = new ProxiEdge.FaceId.Face.Detect.Operation
 proxiEdgeFaceDetectionOperation.ProgressChanged += ProxiEdgeFaceDetectionOperation_ProgressChanged;
 proxiEdgeFaceDetectionOperation.OperationCompleted += ProxiEdgeFaceDetectionOperation_OperationCompleted;
 
+proxiEdgeFaceDetectionOperation.Execute();
+
 private void ProxiEdgeFaceDetectionOperation_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
 {
     ShowProgress(e.ProgressPercentage);
