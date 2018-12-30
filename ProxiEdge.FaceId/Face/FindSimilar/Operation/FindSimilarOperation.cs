@@ -1,6 +1,6 @@
 ﻿using ProxiEdge.FaceId.Base;
 using ProxiEdge.FaceId.Face.FindSimilar.Parameter;
-using ProxiEdge.FaceId.FindSimilar.Face.Result;
+using ProxiEdge.FaceId.Face.FindSimilar.Result;
 using System.Collections.Generic;
 
 namespace ProxiEdge.FaceId.Face.FindSimilar.Operation
@@ -10,7 +10,7 @@ namespace ProxiEdge.FaceId.Face.FindSimilar.Operation
 
         FindSimilarParameter findSimilarParameter;
 
-        public FindSimilarOperation(string faceId,string faceListId,bool useLargeList, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
+        public FindSimilarOperation(string faceId,string faceListId,bool useLargeList = false, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
         {
             findSimilarParameter = new FindSimilarParameter()
             {
@@ -35,10 +35,10 @@ namespace ProxiEdge.FaceId.Face.FindSimilar.Operation
             };
         }
 
-        protected override byte[] Data { get { return findSimilarParameter.ToByteArray(); } }
+        protected override byte[] Data => findSimilarParameter.ToByteArray(); 
 
-        protected override string Operation { get { return FaceOperation.findsimilars.ToString(); } }
+        protected override string Operation => FaceOperation.findsimilars.ToString(); 
 
-        protected override string JSON { get { return findSimilarParameter.ToJson(); } }
+        protected override string JSON => findSimilarParameter.ToJson(); 
     }
 }

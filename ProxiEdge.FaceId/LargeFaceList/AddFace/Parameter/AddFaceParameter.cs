@@ -2,7 +2,7 @@
 
 namespace ProxiEdge.FaceId.LargeFaceList.AddFace.Parameter
 {
-    public class AddFaceParameter : ApiParameterBase
+    internal class AddFaceParameter : ApiParameterBase
     {
         public string Url { get; set; }
     }

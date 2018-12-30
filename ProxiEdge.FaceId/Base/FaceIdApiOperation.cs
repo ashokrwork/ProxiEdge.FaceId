@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ProxiEdge.FaceId.Base
 {
-    public abstract class FaceIdApiOperation<T>
+    public abstract class FaceIdApiOperation<T> : IDisposable
     {
         protected virtual string HttpMethod { get { return System.Net.Http.HttpMethod.Post.Method; } }
         protected virtual string ContentType { get { return WebClientContentType.Json; } }
@@ -157,6 +157,11 @@ namespace ProxiEdge.FaceId.Base
             PrepareStringResults(e);
 
             OperationCompleted?.Invoke(this, Results);
+        }
+
+        public virtual void Dispose()
+        {
+            
         }
     }
 }

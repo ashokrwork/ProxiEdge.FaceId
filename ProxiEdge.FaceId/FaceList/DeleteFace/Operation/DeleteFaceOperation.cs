@@ -1,7 +1,4 @@
 ﻿using ProxiEdge.FaceId.Base;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ProxiEdge.FaceId.FaceList.DeleteFace.Operation
 {
@@ -16,14 +13,14 @@ namespace ProxiEdge.FaceId.FaceList.DeleteFace.Operation
             PersistedFaceId = persistedFaceId;
         }
 
-        protected override byte[] Data => throw new NotImplementedException();
+        protected override byte[] Data => null;
 
-        protected override string JSON { get { return string.Empty; } }
+        protected override string JSON => string.Empty; 
 
-        protected override string Operation { get { return FaceListOperation.facelists.ToString(); } }
+        protected override string Operation => FaceListOperation.facelists.ToString(); 
 
-        protected override string HttpMethod { get { return System.Net.Http.HttpMethod.Delete.Method; } }
+        protected override string HttpMethod => System.Net.Http.HttpMethod.Delete.Method; 
 
-        protected override string QueryString { get { return string.Format("/{0}/persistedFaces/{1}", FaceListId,PersistedFaceId); } }
+        protected override string QueryString => string.Format("/{0}/persistedFaces/{1}", FaceListId,PersistedFaceId); 
     }
 }

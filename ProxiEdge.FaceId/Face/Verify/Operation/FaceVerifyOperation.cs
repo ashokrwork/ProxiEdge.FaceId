@@ -29,32 +29,12 @@ namespace ProxiEdge.FaceId.Face.Verify.Operation
             else
                 faceToPersonVerifyParameter.PersonGroupId = personGroupId;
         }
+
+
+        protected override byte[] Data => IsFaceToFaceVerify ? faceToFaceVerifyParameter.ToByteArray() : faceToPersonVerifyParameter.ToByteArray();
         
+        protected override string Operation => FaceOperation.verify.ToString();
 
-        protected override byte[] Data
-        {
-            get
-            {
-                if (IsFaceToFaceVerify)
-                    return faceToFaceVerifyParameter.ToByteArray();
-                else
-                    return faceToPersonVerifyParameter.ToByteArray();
-            }
-        }
-
-       
-
-        protected override string Operation { get { return FaceOperation.verify.ToString(); } }
-
-        protected override string JSON
-        {
-            get
-            {
-                if (IsFaceToFaceVerify)
-                    return faceToFaceVerifyParameter.ToJson();
-                else
-                    return faceToPersonVerifyParameter.ToJson();
-            }
-        }
+        protected override string JSON => IsFaceToFaceVerify ? faceToFaceVerifyParameter.ToJson() : faceToPersonVerifyParameter.ToJson();
     }
 }

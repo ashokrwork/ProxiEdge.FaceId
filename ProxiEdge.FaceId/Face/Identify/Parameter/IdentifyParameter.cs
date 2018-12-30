@@ -2,7 +2,7 @@
 
 namespace ProxiEdge.FaceId.Face.Identify.Parameter
 {
-    public class IdentifyParameter : ApiParameterBase
+    internal class IdentifyParameter : ApiParameterBase
     {
         /// <summary>
         /// Array of query faces faceIds, created by the Face - Detect. 

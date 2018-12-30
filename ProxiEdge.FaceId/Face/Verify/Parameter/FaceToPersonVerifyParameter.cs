@@ -2,7 +2,7 @@
 
 namespace ProxiEdge.FaceId.Face.Verify.Parameter
 {
-    public class FaceToPersonVerifyParameter : ApiParameterBase
+    internal class FaceToPersonVerifyParameter : ApiParameterBase
     {
         public string FaceId { get; set; }
         public string PersonGroupId { get; set; }

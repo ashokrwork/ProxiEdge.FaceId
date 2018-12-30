@@ -2,7 +2,7 @@
 
 namespace ProxiEdge.FaceId.Face.FindSimilar.Parameter
 {
-    public class FindSimilarParameter : ApiParameterBase
+    internal class FindSimilarParameter : ApiParameterBase
     {
         public string FaceId { get; set; }
         public string FaceListId { get; set; }

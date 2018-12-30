@@ -1,4 +1,4 @@
-﻿namespace ProxiEdge.FaceId.FindSimilar.Face.Result
+﻿namespace ProxiEdge.FaceId.Face.FindSimilar.Result
 {
     public class FindSimilarResults
     {

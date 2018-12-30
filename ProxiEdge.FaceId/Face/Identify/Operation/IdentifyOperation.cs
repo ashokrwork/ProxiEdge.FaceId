@@ -23,10 +23,10 @@ namespace ProxiEdge.FaceId.Face.Identify.Operation
                 identifyParameter.PersonGroupId = groupId;
         }
 
-        protected override byte[] Data { get { return identifyParameter.ToByteArray(); } }
+        protected override byte[] Data => identifyParameter.ToByteArray(); 
 
-        protected override string Operation { get { return FaceOperation.identify.ToString(); } }
+        protected override string Operation => FaceOperation.identify.ToString(); 
 
-        protected override string JSON { get { return identifyParameter.ToJson(); } }
+        protected override string JSON => identifyParameter.ToJson(); 
     }
 }

@@ -6,7 +6,7 @@ namespace ProxiEdge.FaceId.Base
     /// <summary>
     /// Used as base class for any API parameter
     /// </summary>
-    public class ApiParameterBase
+    internal class ApiParameterBase
     {
         /// <summary>
         /// Converts the current parameter to byte[]

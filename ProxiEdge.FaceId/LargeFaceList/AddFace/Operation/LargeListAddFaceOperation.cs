@@ -42,18 +42,12 @@ namespace ProxiEdge.FaceId.LargeFaceList.AddFace.Operation
             TargetFace = string.IsNullOrEmpty(targetFace) ? "" : string.Format("?targetFace={0}", targetFace); 
         }
 
-        protected override string QueryString
-        {
-            get
-            {
-                return string.Format("/{0}/persistedFaces{1}{2}", FaceListId,UserData,TargetFace);
-            }
-        }
+        protected override string QueryString => string.Format("/{0}/persistedFaces{1}{2}", FaceListId,UserData,TargetFace);
+            
+        protected override string ContentType => usePictureUrl?  WebClientContentType.Json: WebClientContentType.Binary; 
 
-        protected override string ContentType { get { if (usePictureUrl) return WebClientContentType.Json; else return WebClientContentType.Binary; } }
+        protected override string JSON => addFaceParameter.ToJson();
 
-        protected override string JSON { get { return addFaceParameter.ToJson(); } }
-
-        protected override string Operation { get { return LargeFaceListOperation.largefacelists.ToString(); } }
+        protected override string Operation => LargeFaceListOperation.largefacelists.ToString(); 
     }
 }

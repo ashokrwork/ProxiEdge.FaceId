@@ -2,7 +2,7 @@
 
 namespace ProxiEdge.FaceId.Face.Detect.Parameter
 {
-    public class FaceDetectionParameter : ApiParameterBase
+    internal class FaceDetectionParameter : ApiParameterBase
     {
         public string Url { get; set; }
     }

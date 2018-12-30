@@ -2,7 +2,7 @@
 
 namespace ProxiEdge.FaceId.Face.Group.Parameter
 {
-    public class GroupParameter : ApiParameterBase
+    internal class GroupParameter : ApiParameterBase
     {
         public string[] FaceIds { get; set; }
     }

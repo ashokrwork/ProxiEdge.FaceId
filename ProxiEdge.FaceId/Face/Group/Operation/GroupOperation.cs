@@ -13,21 +13,12 @@ namespace ProxiEdge.FaceId.Face.Group.Operation
             groupClassificationParameter = new GroupParameter() { FaceIds = faceIds };
         }
 
-        protected override byte[] Data {
-            get
-            {
-                return groupClassificationParameter.ToByteArray();
-            }
-        }
+        protected override byte[] Data => groupClassificationParameter.ToByteArray();
 
-        protected override string Operation { get { return FaceOperation.group.ToString(); } }
 
-        protected override string JSON
-        {
-            get
-            {
-                return groupClassificationParameter.ToJson();
-            }
-        }
+        protected override string Operation => FaceOperation.group.ToString();
+
+        protected override string JSON => groupClassificationParameter.ToJson();
+
     }
 }

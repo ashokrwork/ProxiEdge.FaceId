@@ -41,43 +41,22 @@ namespace ProxiEdge.FaceId.Face.Detect.Operation
         }
 
         protected override string QueryString
-        {
-            get
-            {
-                return string.Format("?returnFaceId={0}&returnFaceLandmarks={1}&returnFaceAttributes={2}",
+        => string.Format("?returnFaceId={0}&returnFaceLandmarks={1}&returnFaceAttributes={2}",
                                         new object[] {
                                             ReturnFaceId.ToString().ToLower(),
                                             ReturnFaceLandmarks.ToString().ToLower(),
                                             RequiredFaceAttributes });
-            }
-        }
+            
 
-        protected override string HttpMethod { get { return System.Net.Http.HttpMethod.Post.Method; } }
+        protected override string HttpMethod => System.Net.Http.HttpMethod.Post.Method;
 
-        protected override byte[] Data
-        {
-            get
-            {
-                
-                    return PictureBytes;
-                
-            }
+        protected override byte[] Data => PictureBytes;
 
-        }
+        protected override string ContentType => usePictureUrl? WebClientContentType.Json : WebClientContentType.Binary;
 
-        protected override string ContentType { get { if (usePictureUrl) return WebClientContentType.Json; else return WebClientContentType.Binary; } }
+        protected override string Operation => FaceOperation.detect.ToString();
 
-        protected override string Operation { get { return FaceOperation.detect.ToString(); } }
-
-        protected override string JSON
-        {
-            get
-            {
-                
-                    return PictureUrlParameter.ToJson();
-               
-            }
-        }
+        protected override string JSON => PictureUrlParameter.ToJson();
     }
 }
 

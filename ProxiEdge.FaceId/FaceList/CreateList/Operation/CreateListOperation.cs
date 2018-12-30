@@ -19,16 +19,16 @@ namespace ProxiEdge.FaceId.FaceList.CreateList.Operation
             };
         }
 
-        protected override string QueryString { get { return string.Format("/{0}",FaceListId); } }
+        protected override string QueryString => string.Format("/{0}",FaceListId); 
 
-        protected override string JSON { get { return CreateListParameter.ToJson(); } }
+        protected override string JSON => CreateListParameter.ToJson(); 
 
-        protected override string Operation { get { return FaceListOperation.facelists.ToString(); } }
+        protected override string Operation => FaceListOperation.facelists.ToString(); 
 
-        protected override string HttpMethod { get { return System.Net.Http.HttpMethod.Put.Method; } }
+        protected override string HttpMethod => System.Net.Http.HttpMethod.Put.Method; 
 
 
 
-        protected override byte[] Data => throw new NotImplementedException();
+        protected override byte[] Data => null;
     }
 }

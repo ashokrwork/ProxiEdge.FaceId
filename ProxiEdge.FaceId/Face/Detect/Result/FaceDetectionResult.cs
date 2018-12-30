@@ -213,19 +213,19 @@ namespace ProxiEdge.FaceId.Face.Detect.Result
     public class HeadPose
     {
         public double roll { get; set; }
-        public int yaw { get; set; }
-        public int pitch { get; set; }
+        public double yaw { get; set; }
+        public double pitch { get; set; }
     }
 
     public class Emotion
     {
         public double anger { get; set; }
-        public int contempt { get; set; }
+        public double contempt { get; set; }
         public double disgust { get; set; }
         public double fear { get; set; }
         public double happiness { get; set; }
         public double neutral { get; set; }
-        public int sadness { get; set; }
+        public double sadness { get; set; }
         public double surprise { get; set; }
     }
 
@@ -297,6 +297,9 @@ namespace ProxiEdge.FaceId.Face.Detect.Result
         public Exposure exposure { get; set; }
         public Noise noise { get; set; }
     }
+
+
+
     public class FaceDetectionResult
     {
 
