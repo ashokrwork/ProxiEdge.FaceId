@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ProxiEdge.FaceId.Configurations;
 using System.Text;
 
 namespace ProxiEdge.FaceId.Base
@@ -14,7 +15,9 @@ namespace ProxiEdge.FaceId.Base
         /// <returns></returns>
         public byte[] ToByteArray()
         {
-            var json = JsonConvert.SerializeObject(this, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var json = JsonConvert.SerializeObject(this, Formatting.None, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore });
             return Encoding.UTF8.GetBytes(json);
         }
         /// <summary>
@@ -23,7 +26,7 @@ namespace ProxiEdge.FaceId.Base
         /// <returns></returns>
         public string ToJson()
         {
-            return JsonConvert.SerializeObject(this, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return JsonConvert.SerializeObject(this, Formatting.None, FaceApiConfig.JsonSettings);
         }
     }
 }

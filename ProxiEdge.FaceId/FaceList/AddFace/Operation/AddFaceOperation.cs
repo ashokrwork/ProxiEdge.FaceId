@@ -48,6 +48,6 @@ namespace ProxiEdge.FaceId.FaceList.AddFace.Operation
 
         protected override string JSON => addFaceParameter.ToJson(); 
 
-        protected override string Operation => FaceListOperation.facelists.ToString(); 
+        protected override string EndPoint => FaceListEndPoint.facelists.ToString(); 
     }
 }

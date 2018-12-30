@@ -18,7 +18,7 @@ namespace ProxiEdge.FaceId.FaceList.GetAllLists.Operation
 
         protected override string JSON => string.Empty; 
 
-        protected override string Operation => FaceListOperation.facelists.ToString(); 
+        protected override string EndPoint => FaceListEndPoint.facelists.ToString(); 
 
         protected override string HttpMethod => System.Net.Http.HttpMethod.Get.Method; 
     }

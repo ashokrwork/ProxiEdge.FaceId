@@ -1,12 +1,10 @@
 ﻿using ProxiEdge.FaceId.Base;
 using ProxiEdge.FaceId.LargeFaceList.GetAllLargeListFaces.Result;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ProxiEdge.FaceId.LargeFaceList.GetAllLargeListFaces.Operation
 {
-    class GetAllLargeListFacesOperation : FaceIdApiOperation<List<GetAllLargeListFacesResult>>
+    public class GetAllLargeListFacesOperation : FaceIdApiOperation<List<GetAllLargeListFacesResult>>
     {
         public string LargeListId;
         public string Start;
@@ -27,6 +25,6 @@ namespace ProxiEdge.FaceId.LargeFaceList.GetAllLargeListFaces.Operation
 
         protected override string JSON => "";
 
-        protected override string Operation => LargeFaceListOperation.largefacelists.ToString();
+        protected override string EndPoint => FaceListEndPoint.largefacelists.ToString();
     }
 }

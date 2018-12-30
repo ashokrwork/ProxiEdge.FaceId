@@ -1,4 +1,5 @@
-﻿using ProxiEdge.FaceId.Base;
+﻿using Newtonsoft.Json;
+using ProxiEdge.FaceId.Base;
 using System;
 
 namespace ProxiEdge.FaceId.Configurations
@@ -28,5 +29,14 @@ namespace ProxiEdge.FaceId.Configurations
             else
                 throw new Exception("Configurations not initiated");
         }
+
+        internal static JsonSerializerSettings JsonSettings => new JsonSerializerSettings()
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            DateFormatHandling = DateFormatHandling.IsoDateFormat,
+            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+            DateParseHandling = DateParseHandling.DateTime,
+            MissingMemberHandling = MissingMemberHandling.Ignore
+        };
     }
 }

@@ -25,7 +25,7 @@ namespace ProxiEdge.FaceId.FaceList.UpdateList.Operation
 
         protected override string JSON { get { return UpdateListParameter.ToJson(); } }
 
-        protected override string Operation { get { return FaceListOperation.facelists.ToString(); } }
+        protected override string EndPoint { get { return FaceListEndPoint.facelists.ToString(); } }
 
         protected override string HttpMethod { get { return "PATCH"; } }
 

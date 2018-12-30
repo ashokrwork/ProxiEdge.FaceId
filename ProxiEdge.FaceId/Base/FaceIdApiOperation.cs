@@ -7,15 +7,14 @@ using System.Text;
 
 namespace ProxiEdge.FaceId.Base
 {
-    public abstract class FaceIdApiOperation<T> : IDisposable
+    public abstract class FaceIdApiOperation<T> : IDisposable, IApiOperation
     {
         protected virtual string HttpMethod { get { return System.Net.Http.HttpMethod.Post.Method; } }
         protected virtual string ContentType { get { return WebClientContentType.Json; } }
 
         protected virtual string QueryString { get; }
         
-        public bool IsSuccedded { get; set; }
-        public Exception Error { get; set; }
+        
 
         public T Results { get; set; }
 
@@ -23,7 +22,11 @@ namespace ProxiEdge.FaceId.Base
 
         protected abstract string JSON { get; }
         
-        protected abstract string Operation { get; }
+        protected abstract string EndPoint { get; }
+
+        public bool IsSuccedded { get; set; }
+        public Exception Error { get; set; }
+        public bool IsExecuting { get; private set; }
 
         private void PrepareDownloadStringResults(DownloadStringCompletedEventArgs e)
         {
@@ -40,7 +43,15 @@ namespace ProxiEdge.FaceId.Base
             }
         }
 
-        private void PrepareByteResults(UploadDataCompletedEventArgs e)
+        
+
+        private void SetResults(string results)
+        {
+            IsSuccedded = true;
+            Results = JsonConvert.DeserializeObject<T>(results, FaceApiConfig.JsonSettings);
+        }
+
+        private void PrepareResults(UploadDataCompletedEventArgs e)
         {
 
             if (e.Error != null)
@@ -50,15 +61,12 @@ namespace ProxiEdge.FaceId.Base
             }
             else
             {
-                IsSuccedded = true;
-                var jsonResults = Encoding.UTF8.GetString(e.Result);
-                Results = JsonConvert.DeserializeObject<T>(jsonResults);
+                SetResults(Encoding.UTF8.GetString(e.Result));
             }
-
 
         }
 
-        private void PrepareStringResults(UploadStringCompletedEventArgs e)
+        private void PrepareResults(UploadStringCompletedEventArgs e)
         {
 
             if (e.Error != null)
@@ -68,9 +76,7 @@ namespace ProxiEdge.FaceId.Base
             }
             else
             {
-                IsSuccedded = true;
-                
-                Results = JsonConvert.DeserializeObject<T>(e.Result);
+                SetResults(e.Result);
             }
 
 
@@ -98,24 +104,10 @@ namespace ProxiEdge.FaceId.Base
             return client;
         }
 
-        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            ProgressChanged?.Invoke(this, e);
-        }
-
-        private void Client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            PrepareDownloadStringResults(e);
-            OperationCompleted?.Invoke(this, Results);
-        }
-
-        private void Client_UploadProgressChanged(object sender, UploadProgressChangedEventArgs e)
-        {
-            ProgressChanged?.Invoke(this, e);
-        }
-
         public void Execute()
         {
+            IsExecuting = true;
+
             var config = FaceApiConfig.Get();
 
             Execute(config.EndPoint, config.ApiKey);
@@ -123,7 +115,9 @@ namespace ProxiEdge.FaceId.Base
 
         public void Execute(FaceIdEndPoint endPoint, string apiKey)
         {
-            var url = new Uri(string.Format("https://{0}.api.cognitive.microsoft.com/face/v1.0/{1}{2}", endPoint.ToString(), Operation, QueryString));
+            IsExecuting = true;
+
+            var url = new Uri(string.Format("https://{0}.api.cognitive.microsoft.com/face/v1.0/{1}{2}", endPoint.ToString(), EndPoint, QueryString));
 
             using (var client = PrepareClient(apiKey))
             {
@@ -131,7 +125,7 @@ namespace ProxiEdge.FaceId.Base
                 {
                     client.UploadDataAsync(url, HttpMethod, Data);
                 }
-                else if(ContentType == WebClientContentType.Json)
+                else if (ContentType == WebClientContentType.Json)
                 {
                     if (HttpMethod == "GET")
                     {
@@ -145,17 +139,42 @@ namespace ProxiEdge.FaceId.Base
             }
         }
 
+        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            ProgressChanged?.Invoke(this, e);
+        }
+        
+
+        private void Client_UploadProgressChanged(object sender, UploadProgressChangedEventArgs e)
+        {
+            ProgressChanged?.Invoke(this, e);
+        }
+
+        
+
         private void Client_UploadDataCompleted(object sender, UploadDataCompletedEventArgs e)
         {
-            PrepareByteResults(e);
+            IsExecuting = false;
+
+            PrepareResults(e);
 
             OperationCompleted?.Invoke(this, Results);
         }
 
         private void Client_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
         {
-            PrepareStringResults(e);
+            IsExecuting = false;
 
+            PrepareResults(e);
+
+            OperationCompleted?.Invoke(this, Results);
+        }
+
+        private void Client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            IsExecuting = false;
+
+            PrepareDownloadStringResults(e);
             OperationCompleted?.Invoke(this, Results);
         }
 

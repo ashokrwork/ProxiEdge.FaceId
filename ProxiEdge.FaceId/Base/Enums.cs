@@ -25,7 +25,8 @@
         northcentralus
     }
 
-    internal enum FaceOperation
+    
+    internal enum FaceEndPoint
     {
         detect,
         findsimilars,
@@ -34,14 +35,17 @@
         identify
     }
 
-    internal enum FaceListOperation
+    internal enum FaceListEndPoint
     {
-        facelists
+        facelists,
+        largefacelists
     }
 
-    internal enum LargeFaceListOperation
+    
+    internal enum GroupEndPoint
     {
-        largefacelists
+        persongroups,
+        largepersongroups
     }
 
     public enum FindSimilarMode

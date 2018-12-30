@@ -21,7 +21,7 @@ namespace ProxiEdge.FaceId.LargeFaceList.GetTrainingStatusLargeList.Operation
 
         protected override string JSON => "";
 
-        protected override string Operation => LargeFaceListOperation.largefacelists.ToString();
+        protected override string EndPoint => FaceListEndPoint.largefacelists.ToString();
 
         protected override string HttpMethod => System.Net.Http.HttpMethod.Get.ToString();
     }

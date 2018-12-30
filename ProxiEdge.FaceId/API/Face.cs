@@ -9,6 +9,7 @@ using ProxiEdge.FaceId.Face.Identify.Operation;
 using ProxiEdge.FaceId.Face.Identify.Result;
 using ProxiEdge.FaceId.Face.Verify.Operation;
 using ProxiEdge.FaceId.Face.Verify.Result;
+using ProxiEdge.FaceId.FaceList.AddFace.Result;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -73,13 +74,37 @@ namespace ProxiEdge.FaceId.API
             ExecuteOperation(operation, completed, progressChanged);
         }
 
+        /// <summary>
+        /// Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. 
+        /// faceId array contains the faces created by Face - Detect, which will expire 24 hours after creation. 
+        /// A "faceListId" is created by FaceList - Create containing persistedFaceIds that will not expire. 
+        /// And a "largeFaceListId" is created by LargeFaceList - Create containing persistedFaceIds that will also not expire. 
+        /// Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity. 
+        /// Find similar has two working modes, "matchPerson" and "matchFace". 
+        /// "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds.
+        /// It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. 
+        /// "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. 
+        /// It can be used in the cases like searching celebrity-looking faces.
+        /// </summary>
+        /// <param name="faceId">
+        /// faceId of the query face. User needs to call Face - Detect first to get a valid faceId. 
+        /// Note that this faceId is not persisted and will expire 24 hours after the detection call.</param>
+        /// <param name="faceIds">An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.</param>
+        /// <param name="completed">Event handler to be called after the opration finishes</param>
+        /// <param name="progressChanged">Event handler to be called for progress reporting</param>
+        /// <param name="maxNumOfCandidatesReturned">Optional parameter. 
+        /// The number of top similar faces returned.
+        /// The valid range is [1, 1000].It defaults to 20.</param>
+        /// <param name="findMode">Optional parameter. 
+        /// Similar face searching mode.It can be "matchPerson" or "matchFace". It defaults to "matchPerson".</param>
         public static void FindSimilar(string faceId, string[] faceIds, EventHandler<List<FindSimilarResults>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
         {
             var operation = new FindSimilarOperation(faceId, faceIds, maxNumOfCandidatesReturned, findMode);
             ExecuteOperation(operation, completed, progressChanged);
         }
 
-        public static void FindSimilarInList(string faceId, string faceListId, EventHandler<List<FindSimilarResults>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
+
+        public static void FindSimilar(string faceId, string faceListId, EventHandler<List<FindSimilarResults>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
         {
             var operation = new FindSimilarOperation(faceId, faceListId, false, maxNumOfCandidatesReturned, findMode);
             ExecuteOperation(operation, completed, progressChanged);
@@ -90,6 +115,7 @@ namespace ProxiEdge.FaceId.API
             var operation = new FindSimilarOperation(faceId, largeFaceListId, true, maxNumOfCandidatesReturned, findMode);
             ExecuteOperation(operation, completed, progressChanged);
         }
+
 
         public static void Group(string[] faceIds, EventHandler<GroupResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
@@ -125,6 +151,95 @@ namespace ProxiEdge.FaceId.API
         {
             var operation = new FaceVerifyOperation(faceId, personId, largePersonGroupId, true);
             ExecuteOperation(operation, completed, progressChanged);
+        }
+
+        public static void DeleteFromList(string faceListId, string persistedFaceId, EventHandler<string> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
+        {
+            FaceList.DeleteFace(faceListId, persistedFaceId, completed, progressChanged);
+        }
+
+        public static void AddToList(string pictureUrl, string faceListId, EventHandler<AddFaceResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, string userData = "", string targetFace = "")
+        {
+            FaceList.AddFace(pictureUrl, faceListId, completed, progressChanged, userData, targetFace);
+        }
+        public static void AddToList(byte[] picture, string faceListId, EventHandler<AddFaceResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, string userData = "", string targetFace = "")
+        {
+            FaceList.AddFace(picture, faceListId, completed, progressChanged, userData, targetFace);
+        }
+
+        public static void AddToLargeList(string pictureUrl, string largeListId, EventHandler<FaceId.LargeFaceList.AddFace.Result.AddFaceResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, string userData = "", string targetFace = "")
+        {
+            LargeFaceList.AddFace(pictureUrl, largeListId, completed, progressChanged, userData, targetFace);
+        }
+
+        public static void AddToLargeList(byte[] picture, string largeListId, EventHandler<FaceId.LargeFaceList.AddFace.Result.AddFaceResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, string userData = "", string targetFace = "")
+        {
+            LargeFaceList.AddFace(picture, largeListId, completed, progressChanged, userData, targetFace);
+        }
+
+        public static void DetectAndVerify(string originalFacePictureUrl,string toMatchFacePictureUrl, EventHandler<FaceVerifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
+        {
+            var detectionOperation = new FaceDetectionOperation(originalFacePictureUrl);
+            detectionOperation.ProgressChanged += progressChanged;
+            detectionOperation.Execute();
+
+            detectionOperation.OperationCompleted += (sender,e) => 
+            {
+                var operation = (IApiOperation)sender;
+
+                if(operation.IsSuccedded)
+                {
+                    var detectionOperation2 = new FaceDetectionOperation(toMatchFacePictureUrl);
+                    detectionOperation2.ProgressChanged += progressChanged;
+                    detectionOperation2.Execute();
+                    detectionOperation2.OperationCompleted += (sender2, e2) =>
+                    {
+                        var operation2 = (IApiOperation)sender2;
+
+                        if(operation.IsSuccedded)
+                        {
+                            var verifyOperation = new FaceVerifyOperation(e[0].FaceId, e2[0].FaceId);
+                            verifyOperation.ProgressChanged += progressChanged;
+                            verifyOperation.OperationCompleted += completed;
+
+                            verifyOperation.Execute();
+                        }
+                    };
+                }
+            };
+        }
+
+        public static void DetectAndVerify(byte[] originalFacePicture, byte[] toMatchFacePicture, EventHandler<FaceVerifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
+        {
+            var detectionOperation = new FaceDetectionOperation(originalFacePicture);
+            detectionOperation.ProgressChanged += progressChanged;
+            detectionOperation.Execute();
+
+            detectionOperation.OperationCompleted += (sender, e) =>
+            {
+                var operation = (IApiOperation)sender;
+
+                if (operation.IsSuccedded)
+                {
+                    var detectionOperation2 = new FaceDetectionOperation(toMatchFacePicture);
+                    detectionOperation2.ProgressChanged += progressChanged;
+                    detectionOperation2.Execute();
+                    detectionOperation2.OperationCompleted += (sender2, e2) =>
+                    {
+                        var operation2 = (IApiOperation)sender2;
+
+                        if (operation.IsSuccedded)
+                        {
+                            var verifyOperation = new FaceVerifyOperation(e[0].FaceId, e2[0].FaceId);
+                            verifyOperation.ProgressChanged += progressChanged;
+                            verifyOperation.OperationCompleted += completed;
+
+                            verifyOperation.Execute();
+                        }
+                    };
+                }
+            };
+
         }
     }
 }

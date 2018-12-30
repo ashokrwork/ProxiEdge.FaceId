@@ -37,7 +37,7 @@ namespace ProxiEdge.FaceId.Face.FindSimilar.Operation
 
         protected override byte[] Data => findSimilarParameter.ToByteArray(); 
 
-        protected override string Operation => FaceOperation.findsimilars.ToString(); 
+        protected override string EndPoint => FaceEndPoint.findsimilars.ToString(); 
 
         protected override string JSON => findSimilarParameter.ToJson(); 
     }

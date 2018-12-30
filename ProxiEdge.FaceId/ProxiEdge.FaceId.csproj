@@ -14,6 +14,10 @@
     <Version>3.0.0</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\Github\ProxiEdge.FaceId\ProxiEdge.FaceId\ProxiEdge.FaceId.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="FaceIdService.cs" />
   </ItemGroup>

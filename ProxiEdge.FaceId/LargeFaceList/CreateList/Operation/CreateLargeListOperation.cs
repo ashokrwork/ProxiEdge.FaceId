@@ -23,7 +23,7 @@ namespace ProxiEdge.FaceId.LargeFaceList.CreateList.Operation
 
         protected override string JSON => CreateListParameter.ToJson(); 
 
-        protected override string Operation => LargeFaceListOperation.largefacelists.ToString(); 
+        protected override string EndPoint => FaceListEndPoint.largefacelists.ToString(); 
 
         protected override string HttpMethod => System.Net.Http.HttpMethod.Put.Method; 
 

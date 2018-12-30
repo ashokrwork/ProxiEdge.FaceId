@@ -16,7 +16,7 @@ namespace ProxiEdge.FaceId.LargeFaceList.DeleteList.Operation
 
         protected override string JSON => string.Empty; 
 
-        protected override string Operation => LargeFaceListOperation.largefacelists.ToString(); 
+        protected override string EndPoint => FaceListEndPoint.largefacelists.ToString(); 
 
         protected override string HttpMethod => System.Net.Http.HttpMethod.Delete.Method; 
 

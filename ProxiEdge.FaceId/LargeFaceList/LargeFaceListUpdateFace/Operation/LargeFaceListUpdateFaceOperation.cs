@@ -24,7 +24,7 @@ namespace ProxiEdge.FaceId.LargeFaceList.LargeFaceListUpdateFace.Operation
 
         protected override string JSON => Parameter.ToJson();
 
-        protected override string Operation => LargeFaceListOperation.largefacelists.ToString();
+        protected override string EndPoint => FaceListEndPoint.largefacelists.ToString();
 
         protected override string HttpMethod => "PATCH";
     }

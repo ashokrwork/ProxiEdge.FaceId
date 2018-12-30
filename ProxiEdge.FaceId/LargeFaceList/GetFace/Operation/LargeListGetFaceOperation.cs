@@ -21,7 +21,7 @@ namespace ProxiEdge.FaceId.LargeFaceList.GetFace.Operation
 
         protected override string HttpMethod => System.Net.Http.HttpMethod.Get.Method; 
 
-        protected override string Operation => LargeFaceListOperation.largefacelists.ToString(); 
+        protected override string EndPoint => FaceListEndPoint.largefacelists.ToString(); 
 
         protected override string QueryString => string.Format("/{0}/persistedFaces/{1}", LargeFaceListId, PersistedFaceId); 
     }

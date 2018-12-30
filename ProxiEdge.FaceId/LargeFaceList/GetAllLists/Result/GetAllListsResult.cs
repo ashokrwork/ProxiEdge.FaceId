@@ -1,6 +1,6 @@
 ﻿namespace ProxiEdge.FaceId.LargeFaceList.GetAllLists.Result
 {
-    public class GetAllListsResult
+    public class GetAllLargeListsResult
     {
         public string LargeFaceListId { get; set; }
         public string Name { get; set; }

@@ -25,7 +25,7 @@ namespace ProxiEdge.FaceId.Face.Identify.Operation
 
         protected override byte[] Data => identifyParameter.ToByteArray(); 
 
-        protected override string Operation => FaceOperation.identify.ToString(); 
+        protected override string EndPoint => FaceEndPoint.identify.ToString(); 
 
         protected override string JSON => identifyParameter.ToJson(); 
     }

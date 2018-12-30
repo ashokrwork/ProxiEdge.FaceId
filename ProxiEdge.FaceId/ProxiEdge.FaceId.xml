@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ProxiEdge.FaceId</name>
+    </assembly>
+    <members>
+        <member name="M:ProxiEdge.FaceId.API.Face.Detect(System.String,System.EventHandler{System.Collections.Generic.List{ProxiEdge.FaceId.Face.Detect.Result.FaceDetectionResult}},System.EventHandler{System.ComponentModel.ProgressChangedEventArgs},System.Boolean,System.Boolean,System.String)">
+            <summary>
+            Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+            Optional parameters including faceId, landmarks, and attributes.
+            Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+            faceId will be used in Face - Identify, Face - Verify, and Face - Find Similar.It will expire 24 hours after the detection call.
+            Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+            JPEG, PNG, GIF (the first frame), and BMP format are supported.The allowed image file size is from 1KB to 6MB.
+            Faces are detectable when its size is 36x36 to 4096x4096 pixels.If need to detect very small but clear faces, please try to enlarge the input image.
+            Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+            Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g.exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+            Attributes(age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate.HeadPose's pitch value is a reserved field and will always return 0.
+            </summary>
+            <param name="pictureUrl">URL of input image.</param>
+            <param name="completed">The event to be called after processing completed</param>
+            <param name="progressChanged">The event to be called during execution for progress reporting</param>
+            <param name="returnFaceId">Return faceIds of the detected faces or not. The default value is true</param>
+            <param name="returnFaceLandmarks">Return face landmarks of the detected faces or not. The default value is false.</param>
+            <param name="requiredFaceAttributes">Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise. Face attribute analysis has additional computational and time cost.</param>
+        </member>
+        <member name="M:ProxiEdge.FaceId.API.Face.Detect(System.Byte[],System.EventHandler{System.Collections.Generic.List{ProxiEdge.FaceId.Face.Detect.Result.FaceDetectionResult}},System.EventHandler{System.ComponentModel.ProgressChangedEventArgs},System.Boolean,System.Boolean,System.String)">
+            <summary>
+            Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+            Optional parameters including faceId, landmarks, and attributes.
+            Attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise.
+            faceId will be used in Face - Identify, Face - Verify, and Face - Find Similar.It will expire 24 hours after the detection call.
+            Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+            JPEG, PNG, GIF (the first frame), and BMP format are supported.The allowed image file size is from 1KB to 6MB.
+            Faces are detectable when its size is 36x36 to 4096x4096 pixels.If need to detect very small but clear faces, please try to enlarge the input image.
+            Up to 64 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+            Face detector prefer frontal and near-frontal faces. There are cases that faces may not be detected, e.g.exceptionally large face angles (head-pose) or being occluded, or wrong image orientation.
+            Attributes(age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise) may not be perfectly accurate.HeadPose's pitch value is a reserved field and will always return 0.
+            </summary>
+            <param name="picture">Byte[] of input image.</param>
+            <param name="completed">The event to be called after processing completed</param>
+            <param name="progressChanged">The event to be called during execution for progress reporting</param>
+            <param name="returnFaceId">Return faceIds of the detected faces or not. The default value is true</param>
+            <param name="returnFaceLandmarks">Return face landmarks of the detected faces or not. The default value is false.</param>
+            <param name="requiredFaceAttributes">Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise. Face attribute analysis has additional computational and time cost.</param>
+        </member>
+        <member name="M:ProxiEdge.FaceId.API.Face.FindSimilar(System.String,System.String[],System.EventHandler{System.Collections.Generic.List{ProxiEdge.FaceId.Face.FindSimilar.Result.FindSimilarResults}},System.EventHandler{System.ComponentModel.ProgressChangedEventArgs},System.Int32,ProxiEdge.FaceId.Base.FindSimilarMode)">
+            <summary>
+            Given query face's faceId, to search the similar-looking faces from a faceId array, a face list or a large face list. 
+            faceId array contains the faces created by Face - Detect, which will expire 24 hours after creation. 
+            A "faceListId" is created by FaceList - Create containing persistedFaceIds that will not expire. 
+            And a "largeFaceListId" is created by LargeFaceList - Create containing persistedFaceIds that will also not expire. 
+            Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity. 
+            Find similar has two working modes, "matchPerson" and "matchFace". 
+            "matchPerson" is the default mode that it tries to find faces of the same person as possible by using internal same-person thresholds.
+            It is useful to find a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds. 
+            "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is low. 
+            It can be used in the cases like searching celebrity-looking faces.
+            </summary>
+            <param name="faceId">
+            faceId of the query face. User needs to call Face - Detect first to get a valid faceId. 
+            Note that this faceId is not persisted and will expire 24 hours after the detection call.</param>
+            <param name="faceIds"></param>
+            <param name="completed"></param>
+            <param name="progressChanged"></param>
+            <param name="maxNumOfCandidatesReturned"></param>
+            <param name="findMode"></param>
+        </member>
+        <member name="T:ProxiEdge.FaceId.Base.ApiParameterBase">
+            <summary>
+            Used as base class for any API parameter
+            </summary>
+        </member>
+        <member name="M:ProxiEdge.FaceId.Base.ApiParameterBase.ToByteArray">
+            <summary>
+            Converts the current parameter to byte[]
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ProxiEdge.FaceId.Base.ApiParameterBase.ToJson">
+            <summary>
+            Converts the current parameter to JSON string
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ProxiEdge.FaceId.Face.Detect.Operation.FaceDetectionOperation">
+            <summary>
+            Used to detect Face List in a picture represented as byte[] or Url
+            Note: make sure that the picture Url is publicly anonymously browsable from the internet 
+            </summary>
+        </member>
+        <member name="P:ProxiEdge.FaceId.Face.Identify.Parameter.IdentifyParameter.FaceIds">
+            <summary>
+            Array of query faces faceIds, created by the Face - Detect. 
+            Each of the faces are identified independently. 
+            The valid number of faceIds is between [1, 10].
+            </summary>
+        </member>
+        <member name="P:ProxiEdge.FaceId.Face.Identify.Parameter.IdentifyParameter.PersonGroupId">
+            <summary>
+            PersonGroupId of the target person group, created by PersonGroup - Create. 
+            Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+            </summary>
+        </member>
+        <member name="P:ProxiEdge.FaceId.Face.Identify.Parameter.IdentifyParameter.LargePersonGroupId">
+            <summary>
+            LargePersonGroupId of the target large person group, created by LargePersonGroup - Create. 
+            Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+            </summary>
+        </member>
+        <member name="P:ProxiEdge.FaceId.Face.Identify.Parameter.IdentifyParameter.MaxNumOfCandidatesReturned">
+            <summary>
+            The range of maxNumOfCandidatesReturned is between 1 and 100 (default is 10).
+            </summary>
+        </member>
+        <member name="P:ProxiEdge.FaceId.Face.Identify.Parameter.IdentifyParameter.ConfidenceThreshold">
+            <summary>
+            Customized identification confidence threshold, in the range of [0, 1]. 
+            Advanced user can tweak this value to override default internal threshold for better precision on their scenario data. 
+            Note there is no guarantee of this threshold value working on other data and after algorithm updates.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -16,7 +16,7 @@ namespace ProxiEdge.FaceId.Face.Group.Operation
         protected override byte[] Data => groupClassificationParameter.ToByteArray();
 
 
-        protected override string Operation => FaceOperation.group.ToString();
+        protected override string EndPoint => FaceEndPoint.group.ToString();
 
         protected override string JSON => groupClassificationParameter.ToJson();
 

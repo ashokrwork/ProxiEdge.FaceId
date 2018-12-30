@@ -54,7 +54,7 @@ namespace ProxiEdge.FaceId.Face.Detect.Operation
 
         protected override string ContentType => usePictureUrl? WebClientContentType.Json : WebClientContentType.Binary;
 
-        protected override string Operation => FaceOperation.detect.ToString();
+        protected override string EndPoint => FaceEndPoint.detect.ToString();
 
         protected override string JSON => PictureUrlParameter.ToJson();
     }

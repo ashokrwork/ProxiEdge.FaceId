@@ -33,7 +33,7 @@ namespace ProxiEdge.FaceId.Face.Verify.Operation
 
         protected override byte[] Data => IsFaceToFaceVerify ? faceToFaceVerifyParameter.ToByteArray() : faceToPersonVerifyParameter.ToByteArray();
         
-        protected override string Operation => FaceOperation.verify.ToString();
+        protected override string EndPoint => FaceEndPoint.verify.ToString();
 
         protected override string JSON => IsFaceToFaceVerify ? faceToFaceVerifyParameter.ToJson() : faceToPersonVerifyParameter.ToJson();
     }
