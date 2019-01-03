@@ -35,4 +35,21 @@ private void ProxiEdgeFaceDetectionOperation_OperationCompleted(object sender, S
                 HandleException(operation.Error);
             }
         }
-        ```
+        
+```
+
+# Using the static layer (New)
+
+```javascript
+
+ProxiEdge.FaceId.API.Face.DetectAsync("[Picture Url]", 
+                (operation, result) =>
+                { 
+                    if(((ProxiEdge.FaceId.Base.IApiOperation)operation).IsSuccedded)
+                    {
+                        var firstDetectedFaceId = result[0].FaceId;
+                    }
+
+                });
+
+```
