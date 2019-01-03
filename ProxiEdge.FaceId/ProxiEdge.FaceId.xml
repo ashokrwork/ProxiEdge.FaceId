@@ -4,7 +4,7 @@
         <name>ProxiEdge.FaceId</name>
     </assembly>
     <members>
-        <member name="M:ProxiEdge.FaceId.API.Face.Detect(System.String,System.EventHandler{System.Collections.Generic.List{ProxiEdge.FaceId.Face.Detect.Result.FaceDetectionResult}},System.EventHandler{System.ComponentModel.ProgressChangedEventArgs},System.Boolean,System.Boolean,System.String)">
+        <member name="M:ProxiEdge.FaceId.API.Face.DetectAsync(System.String,System.EventHandler{System.Collections.Generic.List{ProxiEdge.FaceId.Face.Detect.Result.FaceDetectionResult}},System.EventHandler{System.ComponentModel.ProgressChangedEventArgs},System.Boolean,System.Boolean,System.String)">
             <summary>
             Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
             Optional parameters including faceId, landmarks, and attributes.
@@ -24,7 +24,7 @@
             <param name="returnFaceLandmarks">Return face landmarks of the detected faces or not. The default value is false.</param>
             <param name="requiredFaceAttributes">Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise. Face attribute analysis has additional computational and time cost.</param>
         </member>
-        <member name="M:ProxiEdge.FaceId.API.Face.Detect(System.Byte[],System.EventHandler{System.Collections.Generic.List{ProxiEdge.FaceId.Face.Detect.Result.FaceDetectionResult}},System.EventHandler{System.ComponentModel.ProgressChangedEventArgs},System.Boolean,System.Boolean,System.String)">
+        <member name="M:ProxiEdge.FaceId.API.Face.DetectAsync(System.Byte[],System.EventHandler{System.Collections.Generic.List{ProxiEdge.FaceId.Face.Detect.Result.FaceDetectionResult}},System.EventHandler{System.ComponentModel.ProgressChangedEventArgs},System.Boolean,System.Boolean,System.String)">
             <summary>
             Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
             Optional parameters including faceId, landmarks, and attributes.
@@ -60,11 +60,14 @@
             <param name="faceId">
             faceId of the query face. User needs to call Face - Detect first to get a valid faceId. 
             Note that this faceId is not persisted and will expire 24 hours after the detection call.</param>
-            <param name="faceIds"></param>
-            <param name="completed"></param>
-            <param name="progressChanged"></param>
-            <param name="maxNumOfCandidatesReturned"></param>
-            <param name="findMode"></param>
+            <param name="faceIds">An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.</param>
+            <param name="completed">Event handler to be called after the opration finishes</param>
+            <param name="progressChanged">Event handler to be called for progress reporting</param>
+            <param name="maxNumOfCandidatesReturned">Optional parameter. 
+            The number of top similar faces returned.
+            The valid range is [1, 1000].It defaults to 20.</param>
+            <param name="findMode">Optional parameter. 
+            Similar face searching mode.It can be "matchPerson" or "matchFace". It defaults to "matchPerson".</param>
         </member>
         <member name="T:ProxiEdge.FaceId.Base.ApiParameterBase">
             <summary>

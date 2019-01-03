@@ -28,55 +28,55 @@ namespace ProxiEdge.FaceId.API
         public static void Create(string listId, string listName, EventHandler<string> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, string listDescription = "")
         {
             var operation = new CreateLargeListOperation(listId, listName, listDescription);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void Get(string listId, EventHandler<GetLargeListResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new GetLargeListOperation(listId);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void GetAll(EventHandler<List<GetAllLargeListsResult>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null,string start = "",int top =1000)
         {
             var operation = new GetAllLargeListsOperation(start,top);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void Update(string listId, string listName, EventHandler<string> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, string listDescription = "")
         {
             var operation = new LargeFaceListUpdateOperation(listId, listName, listDescription);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void UpdateFace(string listId, string persistedFaceId, string userData, EventHandler<string> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new LargeFaceListUpdateFaceOperation(listId, persistedFaceId, userData);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void Delete(string listId, EventHandler<string> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new DeleteLargeListOperation(listId);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void DeleteFace(string listId, string persistedFaceId, EventHandler<string> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new LargeListDeleteFaceOperation(listId, persistedFaceId);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void AddFace(string pictureUrl, string listId, EventHandler<AddFaceResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, string userData = "", string targetFace = "")
         {
             var operation = new LargeListAddFaceOperation(pictureUrl, listId, userData, targetFace);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void AddFace(byte[] picture, string listId, EventHandler<AddFaceResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, string userData = "", string targetFace = "")
         {
             var operation = new LargeListAddFaceOperation(picture, listId, userData, targetFace);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void FindSimilar(string faceId, string listId, EventHandler<List<FindSimilarResults>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
@@ -87,19 +87,19 @@ namespace ProxiEdge.FaceId.API
         public static void GetAllFaces(string listId, EventHandler<List<GetAllLargeListFacesResult>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, string start = "",int top = 1000)
         {
             var operation = new GetAllLargeListFacesOperation(listId, start, top);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void Train(string listId, EventHandler<string> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new TrainLargeListOperation(listId);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void GetTrainingStatus(string listId, EventHandler<GetTrainingStatusLargeListResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new GetTrainingStatusLargeListOperation(listId);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
     }
 }

@@ -36,14 +36,19 @@ namespace ProxiEdge.FaceId.API
         /// <param name="returnFaceId">Return faceIds of the detected faces or not. The default value is true</param>
         /// <param name="returnFaceLandmarks">Return face landmarks of the detected faces or not. The default value is false.</param>
         /// <param name="requiredFaceAttributes">Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise. Face attribute analysis has additional computational and time cost.</param>
-        public static void Detect(string pictureUrl, EventHandler<List<FaceDetectionResult>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, bool returnFaceId = true, bool returnFaceLandmarks = false, string requiredFaceAttributes = "")
+        public static void DetectAsync(string pictureUrl, EventHandler<List<FaceDetectionResult>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, bool returnFaceId = true, bool returnFaceLandmarks = false, string requiredFaceAttributes = "")
         {
-            using (var operation = new FaceDetectionOperation(pictureUrl, returnFaceId, returnFaceLandmarks, requiredFaceAttributes))
-            {
-                ExecuteOperation(operation, completed, progressChanged);
-            }
+            var operation = new FaceDetectionOperation(pictureUrl, returnFaceId, returnFaceLandmarks, requiredFaceAttributes);
+            ExecuteOperationAsync(operation, completed, progressChanged);
+
         }
 
+        public static FaceDetectionOperation Detect(string pictureUrl, bool returnFaceId = true, bool returnFaceLandmarks = false, string requiredFaceAttributes = "")
+        {
+            var operation = new FaceDetectionOperation(pictureUrl, returnFaceId, returnFaceLandmarks, requiredFaceAttributes);
+            operation.Execute();
+            return operation;
+        }
         /// <summary>
         /// Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
         /// Optional parameters including faceId, landmarks, and attributes.
@@ -62,16 +67,23 @@ namespace ProxiEdge.FaceId.API
         /// <param name="returnFaceId">Return faceIds of the detected faces or not. The default value is true</param>
         /// <param name="returnFaceLandmarks">Return face landmarks of the detected faces or not. The default value is false.</param>
         /// <param name="requiredFaceAttributes">Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses, emotion, hair, makeup, occlusion, accessories, blur, exposure and noise. Face attribute analysis has additional computational and time cost.</param>
-        public static void Detect(byte[] picture, EventHandler<List<FaceDetectionResult>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, bool returnFaceId = true, bool returnFaceLandmarks = false, string requiredFaceAttributes = "")
+        public static void DetectAsync(byte[] picture, EventHandler<List<FaceDetectionResult>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, bool returnFaceId = true, bool returnFaceLandmarks = false, string requiredFaceAttributes = "")
         {
             var operation = new FaceDetectionOperation(picture, returnFaceId, returnFaceLandmarks, requiredFaceAttributes);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
+        }
+
+        public static FaceDetectionOperation Detect(byte[] picture,  bool returnFaceId = true, bool returnFaceLandmarks = false, string requiredFaceAttributes = "")
+        {
+            var operation = new FaceDetectionOperation(picture, returnFaceId, returnFaceLandmarks, requiredFaceAttributes);
+            operation.Execute();
+            return operation;
         }
 
         public static void FindSimilar(string faceId, string faceListId, EventHandler<List<FindSimilarResults>> completed, bool useLargeList = false, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
         {
             var operation = new FindSimilarOperation(faceId, faceListId, useLargeList, maxNumOfCandidatesReturned, findMode);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         /// <summary>
@@ -100,57 +112,57 @@ namespace ProxiEdge.FaceId.API
         public static void FindSimilar(string faceId, string[] faceIds, EventHandler<List<FindSimilarResults>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
         {
             var operation = new FindSimilarOperation(faceId, faceIds, maxNumOfCandidatesReturned, findMode);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
 
         public static void FindSimilar(string faceId, string faceListId, EventHandler<List<FindSimilarResults>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
         {
             var operation = new FindSimilarOperation(faceId, faceListId, false, maxNumOfCandidatesReturned, findMode);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void FindSimilarInLargeList(string faceId, string largeFaceListId, EventHandler<List<FindSimilarResults>> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 20, FindSimilarMode findMode = FindSimilarMode.matchPerson)
         {
             var operation = new FindSimilarOperation(faceId, largeFaceListId, true, maxNumOfCandidatesReturned, findMode);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
 
         public static void Group(string[] faceIds, EventHandler<GroupResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new GroupOperation(faceIds);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void IdentifyInGroup(string[] faceIds, string groupId, EventHandler<IdentifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 10, double confidenceThreshold = 0.5)
         {
             var operation = new IdentifyOperation(faceIds, groupId, false, maxNumOfCandidatesReturned, confidenceThreshold);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void IdentifyInLargeGroup(string[] faceIds, string largeGroupId, EventHandler<IdentifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null, int maxNumOfCandidatesReturned = 10, double confidenceThreshold = 0.5)
         {
             var operation = new IdentifyOperation(faceIds, largeGroupId, true, maxNumOfCandidatesReturned, confidenceThreshold);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void Verify(string originalFaceId, string toMatchFaceId, EventHandler<FaceVerifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new FaceVerifyOperation(originalFaceId, toMatchFaceId);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void VerifyInGroup(string faceId, string personId, string personGroupId, EventHandler<FaceVerifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new FaceVerifyOperation(faceId, personId, personGroupId);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void VerifyInLargeGroup(string faceId, string personId, string largePersonGroupId, EventHandler<FaceVerifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var operation = new FaceVerifyOperation(faceId, personId, largePersonGroupId, true);
-            ExecuteOperation(operation, completed, progressChanged);
+            ExecuteOperationAsync(operation, completed, progressChanged);
         }
 
         public static void DeleteFromList(string faceListId, string persistedFaceId, EventHandler<string> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
@@ -177,43 +189,11 @@ namespace ProxiEdge.FaceId.API
             LargeFaceList.AddFace(picture, largeListId, completed, progressChanged, userData, targetFace);
         }
 
-        public static void DetectAndVerify(string originalFacePictureUrl,string toMatchFacePictureUrl, EventHandler<FaceVerifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
+        public static void DetectAndVerify(string originalFacePictureUrl, string toMatchFacePictureUrl, EventHandler<FaceVerifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
         {
             var detectionOperation = new FaceDetectionOperation(originalFacePictureUrl);
             detectionOperation.ProgressChanged += progressChanged;
-            detectionOperation.Execute();
-
-            detectionOperation.OperationCompleted += (sender,e) => 
-            {
-                var operation = (IApiOperation)sender;
-
-                if(operation.IsSuccedded)
-                {
-                    var detectionOperation2 = new FaceDetectionOperation(toMatchFacePictureUrl);
-                    detectionOperation2.ProgressChanged += progressChanged;
-                    detectionOperation2.Execute();
-                    detectionOperation2.OperationCompleted += (sender2, e2) =>
-                    {
-                        var operation2 = (IApiOperation)sender2;
-
-                        if(operation.IsSuccedded)
-                        {
-                            var verifyOperation = new FaceVerifyOperation(e[0].FaceId, e2[0].FaceId);
-                            verifyOperation.ProgressChanged += progressChanged;
-                            verifyOperation.OperationCompleted += completed;
-
-                            verifyOperation.Execute();
-                        }
-                    };
-                }
-            };
-        }
-
-        public static void DetectAndVerify(byte[] originalFacePicture, byte[] toMatchFacePicture, EventHandler<FaceVerifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
-        {
-            var detectionOperation = new FaceDetectionOperation(originalFacePicture);
-            detectionOperation.ProgressChanged += progressChanged;
-            detectionOperation.Execute();
+            detectionOperation.ExecuteAsync();
 
             detectionOperation.OperationCompleted += (sender, e) =>
             {
@@ -221,9 +201,9 @@ namespace ProxiEdge.FaceId.API
 
                 if (operation.IsSuccedded)
                 {
-                    var detectionOperation2 = new FaceDetectionOperation(toMatchFacePicture);
+                    var detectionOperation2 = new FaceDetectionOperation(toMatchFacePictureUrl);
                     detectionOperation2.ProgressChanged += progressChanged;
-                    detectionOperation2.Execute();
+                    detectionOperation2.ExecuteAsync();
                     detectionOperation2.OperationCompleted += (sender2, e2) =>
                     {
                         var operation2 = (IApiOperation)sender2;
@@ -234,7 +214,39 @@ namespace ProxiEdge.FaceId.API
                             verifyOperation.ProgressChanged += progressChanged;
                             verifyOperation.OperationCompleted += completed;
 
-                            verifyOperation.Execute();
+                            verifyOperation.ExecuteAsync();
+                        }
+                    };
+                }
+            };
+        }
+
+        public static void DetectAndVerify(byte[] originalFacePicture, byte[] toMatchFacePicture, EventHandler<FaceVerifyResult> completed, EventHandler<ProgressChangedEventArgs> progressChanged = null)
+        {
+            var detectionOperation = new FaceDetectionOperation(originalFacePicture);
+            detectionOperation.ProgressChanged += progressChanged;
+            detectionOperation.ExecuteAsync();
+
+            detectionOperation.OperationCompleted += (sender, e) =>
+            {
+                var operation = (IApiOperation)sender;
+
+                if (operation.IsSuccedded)
+                {
+                    var detectionOperation2 = new FaceDetectionOperation(toMatchFacePicture);
+                    detectionOperation2.ProgressChanged += progressChanged;
+                    detectionOperation2.ExecuteAsync();
+                    detectionOperation2.OperationCompleted += (sender2, e2) =>
+                    {
+                        var operation2 = (IApiOperation)sender2;
+
+                        if (operation.IsSuccedded)
+                        {
+                            var verifyOperation = new FaceVerifyOperation(e[0].FaceId, e2[0].FaceId);
+                            verifyOperation.ProgressChanged += progressChanged;
+                            verifyOperation.OperationCompleted += completed;
+
+                            verifyOperation.ExecuteAsync();
                         }
                     };
                 }

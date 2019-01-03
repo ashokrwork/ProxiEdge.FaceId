@@ -7,21 +7,21 @@ using System.Text;
 
 namespace ProxiEdge.FaceId.Base
 {
-    public abstract class FaceIdApiOperation<T> : IDisposable, IApiOperation
+    public abstract class FaceIdApiOperation<T> : IApiOperation
     {
         protected virtual string HttpMethod { get { return System.Net.Http.HttpMethod.Post.Method; } }
         protected virtual string ContentType { get { return WebClientContentType.Json; } }
 
         protected virtual string QueryString { get; }
-        
-        
+
+
 
         public T Results { get; set; }
 
         protected abstract byte[] Data { get; }
 
         protected abstract string JSON { get; }
-        
+
         protected abstract string EndPoint { get; }
 
         public bool IsSuccedded { get; set; }
@@ -38,16 +38,15 @@ namespace ProxiEdge.FaceId.Base
             else
             {
                 IsSuccedded = true;
-                
+
                 Results = JsonConvert.DeserializeObject<T>(e.Result);
             }
         }
-
         
-
         private void SetResults(string results)
         {
             IsSuccedded = true;
+            IsExecuting = false;
             Results = JsonConvert.DeserializeObject<T>(results, FaceApiConfig.JsonSettings);
         }
 
@@ -82,7 +81,6 @@ namespace ProxiEdge.FaceId.Base
 
         }
 
-
         public event EventHandler<ProgressChangedEventArgs> ProgressChanged;
         public event EventHandler<T> OperationCompleted;
 
@@ -104,6 +102,15 @@ namespace ProxiEdge.FaceId.Base
             return client;
         }
 
+        public void ExecuteAsync()
+        {
+            IsExecuting = true;
+
+            var config = FaceApiConfig.Get();
+
+            ExecuteAsync(config.EndPoint, config.ApiKey);
+        }
+
         public void Execute()
         {
             IsExecuting = true;
@@ -114,6 +121,32 @@ namespace ProxiEdge.FaceId.Base
         }
 
         public void Execute(FaceIdEndPoint endPoint, string apiKey)
+        {
+            IsExecuting = true;
+
+            var url = new Uri(string.Format("https://{0}.api.cognitive.microsoft.com/face/v1.0/{1}{2}", endPoint.ToString(), EndPoint, QueryString));
+
+            using (var client = PrepareClient(apiKey))
+            {
+                if (ContentType == WebClientContentType.Binary)
+                {
+                    SetResults(Encoding.UTF8.GetString(client.UploadData(url, HttpMethod, Data)));
+                }
+                else if (ContentType == WebClientContentType.Json)
+                {
+                    if (HttpMethod == "GET")
+                    {
+                        SetResults(client.DownloadString(url));
+                    }
+                    else
+                    {
+                        SetResults(client.UploadString(url, HttpMethod, JSON));
+                    }
+                }
+            }
+        }
+
+        public void ExecuteAsync(FaceIdEndPoint endPoint, string apiKey)
         {
             IsExecuting = true;
 
@@ -143,14 +176,11 @@ namespace ProxiEdge.FaceId.Base
         {
             ProgressChanged?.Invoke(this, e);
         }
-        
 
         private void Client_UploadProgressChanged(object sender, UploadProgressChangedEventArgs e)
         {
             ProgressChanged?.Invoke(this, e);
         }
-
-        
 
         private void Client_UploadDataCompleted(object sender, UploadDataCompletedEventArgs e)
         {
@@ -178,9 +208,5 @@ namespace ProxiEdge.FaceId.Base
             OperationCompleted?.Invoke(this, Results);
         }
 
-        public virtual void Dispose()
-        {
-            
-        }
     }
 }
