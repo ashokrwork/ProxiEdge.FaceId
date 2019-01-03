@@ -5,7 +5,7 @@ This library is used as a wrapper for Microsoft Cognitive Service (Face Id).
 
 # Sample Usage
 
-```javascript
+```cs
 ProxiEdge.FaceId.Configurations.FaceApiConfig.Init(ProxiEdge.FaceId.Base.FaceIdEndPoint.eastasia, "[API Key]");
 
 var proxiEdgeFaceDetectionOperation = new ProxiEdge.FaceId.Face.Detect.Operation.FaceDetectionOperation("[Photo Url]", true, true);
@@ -40,7 +40,7 @@ private void ProxiEdgeFaceDetectionOperation_OperationCompleted(object sender, S
 
 # Using the static layer (New)
 
-```javascript
+```cs
 
 ProxiEdge.FaceId.API.Face.DetectAsync("[Picture Url]", 
                 (operation, result) =>
